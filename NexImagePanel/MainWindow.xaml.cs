@@ -40,6 +40,7 @@ namespace NexImagePanel
         private string UsbBackupDrive { get; set; } = "";
 
         private string ImageFileName => _configuration["imageFileName"] ?? "";
+        private string BackupPartitionPath => _configuration["backupPartitionPath"] ?? "D:";
 
         private void BtnSetUsbDrive_Click(object sender, RoutedEventArgs e)
         {
@@ -62,7 +63,7 @@ namespace NexImagePanel
         {
             if (!Directory.Exists(this.UsbBackupDrive)) return;
             var imageNew = $"{Environment.MachineName}.CurrentImage.TBI";
-            var sourceImageFileName = Path.Combine("D:",ImageFileName);
+            var sourceImageFileName = Path.Combine(BackupPartitionPath,ImageFileName);
             if (!File.Exists(sourceImageFileName)) return;
             var destImageFileName = Path.Combine(UsbBackupDrive, imageNew);
             File.Copy(sourceImageFileName,destImageFileName);
