@@ -3,6 +3,11 @@ using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
+using NexImagePanel.Config;
+using NexImagePanel.Interfaces;
+using NexImagePanel.SystemServices;
+using NexImagePanel.ViewModels;
 
 namespace NexImagePanel
 {
@@ -14,20 +19,33 @@ namespace NexImagePanel
 
 
     {
-        public IConfiguration Configuration { get; private set; }
+        
 
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+            Services = ConfigureServices();
+        }
 
-            // Create a ConfigurationBuilder
+        public IServiceProvider Services { get; private set; }
+
+
+        /// <summary>
+        /// Configures the services for the application.
+        /// </summary>
+        private static IServiceProvider ConfigureServices()
+        {
+            var services = new ServiceCollection();
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory()) // Set the base path where the configuration file is located
                 .AddJsonFile("appsettings.json"); // Add the JSON configuration file
-
-            // Build the IConfiguration instance
-            Configuration = builder.Build();
+            services.AddSingleton<IConfiguration>(builder.Build());
+            services.AddSingleton<PanelConfig>();
+            services.AddTransient<MainWindowViewModel>();
+            services.AddTransient<RunScriptsWindowViewModel>();
+            services.AddSingleton<ICoreServices, CoreServices>();
+            return services.BuildServiceProvider();
         }
     }
 

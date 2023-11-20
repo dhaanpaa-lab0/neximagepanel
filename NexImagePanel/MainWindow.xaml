@@ -4,20 +4,26 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NexImagePanel"
+        xmlns:viewModels="clr-namespace:NexImagePanel.ViewModels"
+        d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
         mc:Ignorable="d"
-        Title="Image Control Panel" Height="761" Width="800" Loaded="Window_Loaded">
+        Title="Image Control Panel" Height="761" Width="1000">
     <Grid>
 
-        <StackPanel Margin="32px">
+        <StackPanel Margin="16px">
 
-            <TextBlock Margin="32px"  Text="NEXUS Image Control Panel" FontSize="24"></TextBlock>
-            <StackPanel Orientation="Horizontal" Margin="16px">
+            <TextBlock Margin="8px"  Text="NEXUS Image Control Panel" FontSize="24"></TextBlock>
+            <StackPanel Orientation="Horizontal" Margin="8px">
                 <TextBlock Text="Computer Name:" Padding="0,0,12,0" FontWeight="Bold"></TextBlock>
-                <TextBlock Name="TxtComputerName" Text=""></TextBlock>
+                <TextBlock  Text="{Binding ComputerName}"></TextBlock>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="16px">
-                <TextBlock Text="Backup Location:" Padding="0,0,12,0" FontWeight="Bold"></TextBlock>
-                <TextBlock Name="TxtUsbDrive" Text="(not selected)"></TextBlock>
+            <StackPanel Orientation="Horizontal" Margin="8px">
+                <TextBlock Text="Internal Backup Location:" Padding="0,0,12,0" FontWeight="Bold"></TextBlock>
+                <TextBlock Text="{Binding InternalBackupPath}"></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="8px">
+                <TextBlock Text="External Backup Location:" Padding="0,0,12,0" FontWeight="Bold"></TextBlock>
+                <TextBlock Text="{Binding Mode=TwoWay, Path=ExternalBackupPath}"></TextBlock>
             </StackPanel>
             <Grid Background="#FF524D4D" MinHeight="800px">
                 <Grid.ColumnDefinitions>
@@ -30,15 +36,25 @@
                     <RowDefinition Height="50px"></RowDefinition>
                     <RowDefinition Height="50px"></RowDefinition>
                     <RowDefinition Height="50px"></RowDefinition>
+                    <RowDefinition Height="50px"></RowDefinition>
+                    <RowDefinition Height="50px"></RowDefinition>
+                    <RowDefinition Height="50px"></RowDefinition>
+                    <RowDefinition Height="50px"></RowDefinition>
+                    <RowDefinition Height="50px"></RowDefinition>
+                    <RowDefinition Height="50px"></RowDefinition>
                 </Grid.RowDefinitions>
-                <Button Margin="12px" Grid.Column="0" Grid.Row="0" Name="BtnSetUsbDrive" Click="BtnSetUsbDrive_Click">Set USB Drive</Button>
-                <Button Grid.Column="0" Grid.Row="1" Margin="12px" Name="BtnCopyToBackupFolder" Click="BtnCopyToBackupFolder_Click">Copy to Backup Folder</Button>
-
-
+                <Button Margin="6px" Grid.Column="0" Grid.Row="0" Command="{Binding SelectBackupDestinationCommand}">Set USB Drive</Button>
+                <Button Margin="6px" Grid.Column="0" Grid.Row="1">Copy to Backup Folder</Button>
+                <Button Margin="6" Grid.Column="0" Grid.Row="2" Command="{Binding SetBlackDesktopCommand}">Set Black Background</Button>
+                <Button Margin="6" Grid.Column="0" Grid.Row="3" Command="{Binding SetGrayDesktopCommand}">Set Gray Background</Button>
+                <Button Margin="6" Grid.Column="0" Grid.Row="4" Command="{Binding SetDarkBlueDesktopCommand}">Set DarkBlue Background</Button>
+                <Button Margin="6" Grid.Column="0" Grid.Row="5"  Command="{Binding SetLightBlueDesktopCommand}">Set LightBlue Background</Button>
+                <Button Margin="6" Grid.Column="0" Grid.Row="6" Command="{Binding SetDarkCyanDesktopCommand}">Set DarkCyan Background</Button>
+                <Button Margin="6" Grid.Column="1" Grid.Row="0" Command="{Binding ShowScriptsWindowCommand}">Run Custom Scripts</Button>
+                <Button Margin="6" Grid.Column="1" Grid.Row="1" Command="{Binding EditPanelConfigCommand}">Edit Panel Config</Button>
+                <Button Margin="6" Grid.Column="1" Grid.Row="2" Command="{Binding OpenPanelScriptsFolderCommand}">Open Panel Scripts Folder</Button>
+                <Button Margin="6" Grid.Column="2" Grid.Row="9" Click="Exit_ImagePanel_Click">Exit</Button>
             </Grid>
         </StackPanel>
-
-
-
     </Grid>
 </Window>
