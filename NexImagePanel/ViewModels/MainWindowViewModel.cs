@@ -81,6 +81,9 @@ namespace NexImagePanel.ViewModels
         public void OpenPanelScriptsFolder() =>
             _core.OpenFolderInExplorer(Path.Combine(Environment.CurrentDirectory, "Scripts"));
 
+        [RelayCommand]
+        public void OpenImageBackupWindow() =>
+            new ImageBackupWindow().Show();
 
         [RelayCommand]
         public void Backup()
