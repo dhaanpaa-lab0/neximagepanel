@@ -44,6 +44,7 @@ namespace NexImagePanel
             services.AddSingleton<PanelConfig>();
             services.AddTransient<MainWindowViewModel>();
             services.AddTransient<RunScriptsWindowViewModel>();
+            services.AddTransient<ImageBackupWindowViewModel>();
             services.AddSingleton<ICoreServices, CoreServices>();
             return services.BuildServiceProvider();
         }

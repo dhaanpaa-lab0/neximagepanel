@@ -26,5 +26,18 @@ namespace NexImagePanel.Config
                     : new();
             }
         }
+
+        public List<ImageScript> ImageScripts
+        {
+            get
+            {
+                var scriptsConfigSection = configuration.GetSection("imageScripts");
+
+                return scriptsConfigSection.Exists()
+                    ? scriptsConfigSection.Get<List<ImageScript>>() ?? new List<ImageScript>()
+                    : new();
+            }
+        }
     }
+
 }

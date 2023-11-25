@@ -11,6 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Microsoft.Extensions.DependencyInjection;
+using NexImagePanel.ViewModels;
+using Application = System.Windows.Application;
 
 namespace NexImagePanel
 {
@@ -21,7 +24,10 @@ namespace NexImagePanel
     {
         public ImageBackupWindow()
         {
+            
             InitializeComponent();
+            var app = (App)Application.Current;
+            this.DataContext = app.Services.GetService<ImageBackupWindowViewModel>();
         }
     }
 }

@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:NexImagePanel"
         
         xmlns:viewModels="clr-namespace:NexImagePanel.ViewModels"
+        xmlns:models="clr-namespace:NexImagePanel.Models"
         d:DataContext="{d:DesignInstance viewModels:ImageBackupWindowViewModel}"
         mc:Ignorable="d"
         Title="Image Backup" Height="450" Width="850">
@@ -20,14 +21,33 @@
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Orientation="Vertical">
             <StackPanel Orientation="Horizontal" Margin="6">
-                <TextBlock FontWeight="Bold" MinWidth="200px" TextAlignment="Right" Margin="6">Internal Backup Drive:</TextBlock>
+                <TextBlock FontWeight="Bold" MinWidth="200px" TextAlignment="Right" Margin="6">Internal Backup Path:</TextBlock>
                 <TextBlock Text="{Binding InternalBackupPath, FallbackValue='(not set)'}" Margin="6"></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="6">
+                <TextBlock FontWeight="Bold" MinWidth="200px" TextAlignment="Right" Margin="6">External Backup Path:</TextBlock>
+                <TextBlock Text="{Binding ExternalBackupPath, FallbackValue='(not set)'}" Margin="6"></TextBlock>
             </StackPanel>
         </StackPanel>
         <StackPanel Grid.Column="1" Orientation="Vertical">
-            <Button MinWidth="230" Margin="6">Create Baseline Backup</Button>
-            <Button MinWidth="230" Margin="6">Restore Baseline Backup</Button>
-            <Button MinWidth="230" Margin="6">Copy Backup to External</Button>
+            <ItemsControl ItemsSource="{Binding ImageScripts}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type models:ImageScript}">
+                        <Button MinWidth="230" Margin="6" 
+
+                                Content="{Binding ScriptDescription}"
+                                Command="{Binding Path=ExecuteScriptCommand}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                
+            </ItemsControl>
+            
+            
         </StackPanel>
     </Grid>
 </Window>
