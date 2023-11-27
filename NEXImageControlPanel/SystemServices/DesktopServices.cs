@@ -2,7 +2,7 @@
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace NexImagePanel.SystemServices;
+namespace NEXImageControlPanel.SystemServices;
 
 public class DesktopServices
 {

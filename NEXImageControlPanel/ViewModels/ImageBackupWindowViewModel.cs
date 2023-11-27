@@ -3,11 +3,11 @@ using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
-using NexImagePanel.Config;
-using NexImagePanel.Interfaces;
-using NexImagePanel.Models;
+using NEXImageControlPanel.Config;
+using NEXImageControlPanel.Interfaces;
+using NEXImageControlPanel.Models;
 
-namespace NexImagePanel.ViewModels;
+namespace NEXImageControlPanel.ViewModels;
 
 public partial class ImageBackupWindowViewModel : ObservableObject
 {
@@ -41,7 +41,7 @@ public partial class ImageBackupWindowViewModel : ObservableObject
     [RelayCommand]
     public void DoScript(string parameter)
     {
-        var script = this.ImageScripts.FirstOrDefault(s => s.ScriptName == parameter);
+        var script = Enumerable.FirstOrDefault<ImageScript>(this.ImageScripts, s => s.ScriptName == parameter);
         if (script is { ScriptName: not null })
         {
             MessageBox.Show(_runner.GetAbsoluteScriptPath(script.ScriptName, ScriptType.Batch));

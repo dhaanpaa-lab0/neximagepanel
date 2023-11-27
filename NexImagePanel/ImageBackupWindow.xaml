@@ -28,6 +28,7 @@
                 <TextBlock FontWeight="Bold" MinWidth="200px" TextAlignment="Right" Margin="6">External Backup Path:</TextBlock>
                 <TextBlock Text="{Binding ExternalBackupPath, FallbackValue='(not set)'}" Margin="6"></TextBlock>
             </StackPanel>
+            <Button Margin="12" Command="{Binding SelectExternalBackupPathCommand}">Select External Path</Button>
         </StackPanel>
         <StackPanel Grid.Column="1" Orientation="Vertical">
             <ItemsControl ItemsSource="{Binding ImageScripts}">
@@ -41,7 +42,9 @@
                         <Button MinWidth="230" Margin="6" 
 
                                 Content="{Binding ScriptDescription}"
-                                Command="{Binding Path=ExecuteScriptCommand}" />
+                                Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.DoScriptCommand}"
+                                CommandParameter="{Binding Path=ScriptName}"/>
+
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
                 

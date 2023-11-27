@@ -1,28 +1,23 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using NEXImageControlPanel.Config;
+using NEXImageControlPanel.Interfaces;
+using NEXImageControlPanel.Models;
+using NEXImageControlPanel.SystemServices;
+using NEXImageControlPanel.ViewModels;
 using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Windows;
-using Microsoft.Extensions.DependencyInjection;
-using NexImagePanel.Config;
-using NexImagePanel.Interfaces;
-using NexImagePanel.SystemServices;
-using NexImagePanel.ViewModels;
-using NexImagePanel.Models;
+using NEXImageControlPanel.Managers;
 
-namespace NexImagePanel
+namespace NEXImageControlPanel
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    
-    public partial class App : System.Windows.Application
-
-
+    public partial class App : Application
     {
-        
-
-
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -49,6 +44,7 @@ namespace NexImagePanel
             services.AddTransient<ImageScript>();
             services.AddSingleton<ICoreServices, CoreServices>();
             services.AddSingleton<IScriptRunnerServices, ScriptRunnerServices>();
+            services.AddSingleton<IAppPageManager, AppPageManager>();
             return services.BuildServiceProvider();
         }
     }

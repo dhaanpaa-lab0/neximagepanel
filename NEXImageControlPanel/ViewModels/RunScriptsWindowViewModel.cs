@@ -2,12 +2,12 @@
 using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using NexImagePanel.Config;
-using NexImagePanel.Interfaces;
-using NexImagePanel.Models;
+using NEXImageControlPanel.Config;
+using NEXImageControlPanel.Interfaces;
+using NEXImageControlPanel.Models;
 using MessageBox = System.Windows.MessageBox;
 
-namespace NexImagePanel.ViewModels;
+namespace NEXImageControlPanel.ViewModels;
 
 
 public partial class RunScriptsWindowViewModel(PanelConfig config, ICoreServices core, IScriptRunnerServices runner) : ObservableObject

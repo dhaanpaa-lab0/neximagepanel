@@ -1,36 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Navigation;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Extensions.Configuration;
-using NexImagePanel.Config;
-using NexImagePanel.Interfaces;
-using NexImagePanel.SystemServices;
+using NEXImageControlPanel.Config;
+using NEXImageControlPanel.Interfaces;
+using NEXImageControlPanel.Models;
+using NEXImageControlPanel.Pages;
+using NEXImageControlPanel.SystemServices;
 
-namespace NexImagePanel.ViewModels
+namespace NEXImageControlPanel.ViewModels
 {
     public partial class MainWindowViewModel : ObservableObject
     {
-
-        private PanelConfig _config;
-        private ICoreServices _core;
         [ObservableProperty]
         private string? _externalBackupPath;
 
-        public string InternalBackupPath => _config.InternalBackupPartitionPath;
+        [ObservableProperty] private List<MainWindowPage> _windowPages;
+        private readonly PanelConfig _config;
+        private readonly ICoreServices _core;
 
-        public MainWindowViewModel(PanelConfig config, ICoreServices core)
+        [ObservableProperty]
+        private Page currentWindowPage;
+
+        /// <inheritdoc/>
+        public MainWindowViewModel(PanelConfig config, ICoreServices core, IAppPageManager pageManager)
         {
             _config = config;
             _core = core;
+            _windowPages = pageManager.GetAppPages();
+            CurrentWindowPage = new HomePage();
         }
+
+        public string InternalBackupPath => _config.InternalBackupPartitionPath;
 
 
         public string ComputerName => Environment.MachineName;
@@ -56,8 +61,8 @@ namespace NexImagePanel.ViewModels
         [RelayCommand]
         public void SetDarkCyanDesktop() => DesktopServices.SetSolidColorWallpaper(Color.DarkCyan);
 
-        [RelayCommand]
-        public void ShowScriptsWindow() => new RunScriptsWindow().Show();
+        //[RelayCommand]
+        //public void ShowScriptsWindow() => new RunScriptsWindow().Show();
 
         [RelayCommand]
         public void EditPanelConfig() =>
@@ -68,8 +73,19 @@ namespace NexImagePanel.ViewModels
             _core.OpenFolderInExplorer(Path.Combine(Environment.CurrentDirectory, "Scripts"));
 
         [RelayCommand]
-        public void OpenImageBackupWindow() =>
-            new ImageBackupWindow().Show();
+        public void ShowPage(string parameter)
+        {
+            var p = WindowPages.FirstOrDefault(x => x.PageName == parameter);
+
+            if (p != null)
+            {
+                CurrentWindowPage = p.WindowPage.Invoke();
+            }
+        }
+
+        //[RelayCommand]
+        //public void OpenImageBackupWindow() =>
+        //    new ImageBackupWindow().Show();
 
         [RelayCommand]
         public void Backup()
