@@ -10,6 +10,7 @@ using System.Data;
 using System.IO;
 using System.Windows;
 using NEXImageControlPanel.Managers;
+using NEXImageControlPanel.PageViewModels;
 
 namespace NEXImageControlPanel
 {
@@ -42,6 +43,7 @@ namespace NEXImageControlPanel
             services.AddTransient<RunScriptsWindowViewModel>();
             services.AddTransient<ImageBackupWindowViewModel>();
             services.AddTransient<ImageScript>();
+            services.AddTransient<SystemInfoPageViewModel>();
             services.AddSingleton<ICoreServices, CoreServices>();
             services.AddSingleton<IScriptRunnerServices, ScriptRunnerServices>();
             services.AddSingleton<IAppPageManager, AppPageManager>();

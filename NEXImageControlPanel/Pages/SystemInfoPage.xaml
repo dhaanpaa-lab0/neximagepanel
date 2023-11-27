@@ -4,11 +4,16 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:NEXImageControlPanel.Pages"
+      xmlns:pageViewModels="clr-namespace:NEXImageControlPanel.PageViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
+      d:DataContext="{d:DesignInstance pageViewModels:SystemInfoPageViewModel}"
       Title="System Info">
 
-    <Grid>
-        <TextBlock> Page 1</TextBlock>
-    </Grid>
+    <StackPanel Orientation="Vertical" Margin="12">
+        <StackPanel Orientation="Horizontal" Margin="3">
+            <TextBlock FontWeight="Bold" Margin="3" TextAlignment="Right">Computer Name:</TextBlock>
+            <TextBlock Margin="3" Text="{Binding Path=ComputerName}"></TextBlock>
+        </StackPanel>
+    </StackPanel>
 </Page>

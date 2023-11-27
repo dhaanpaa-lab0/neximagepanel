@@ -8,7 +8,7 @@
         xmlns:models="clr-namespace:NEXImageControlPanel.Models"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
-        Title="MainWindow" Height="450" Width="900">
+        Title="Image Control Panel" Height="450" Width="900">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="250" Width="5*"></ColumnDefinition>

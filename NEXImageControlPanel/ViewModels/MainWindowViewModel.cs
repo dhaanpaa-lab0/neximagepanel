@@ -79,7 +79,7 @@ namespace NEXImageControlPanel.ViewModels
 
             if (p != null)
             {
-                CurrentWindowPage = p.WindowPage.Invoke();
+                CurrentWindowPage = p.WindowPage.Compile().Invoke();
             }
         }
 

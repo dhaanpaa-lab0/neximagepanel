@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,15 +13,12 @@ namespace NEXImageControlPanel.Managers
 {
     public class AppPageManager : IAppPageManager
     {
-        public static Func<T> CreateNewInstanceFunc<T>(T type) where T : new()
+        public static Expression<Func<T>> CreateNewInstanceFunc<T>(T type)
         {
-            // Check if T has a parameterless constructor
-            var ctor = typeof(T).GetConstructor(Type.EmptyTypes);
-            return ctor == null
-                ? throw new InvalidOperationException("No parameterless constructor found for this type.")
-                :
-                // Create and return a function that invokes the constructor
-                () => (T)ctor.Invoke(null);
+            NewExpression exp = Expression.New(type.GetType());
+
+            // Define the type T
+            return Expression.Lambda<Func<T>>(exp);
         }
 
         public List<MainWindowPage> GetAppPages()
