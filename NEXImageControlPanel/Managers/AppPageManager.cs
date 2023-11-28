@@ -15,7 +15,8 @@ namespace NEXImageControlPanel.Managers
     {
         public static Expression<Func<T>> CreateNewInstanceFunc<T>(T type)
         {
-            NewExpression exp = Expression.New(type.GetType());
+            if (type == null) {  throw new ArgumentNullException("type"); }
+            var exp = Expression.New(type.GetType());
 
             // Define the type T
             return Expression.Lambda<Func<T>>(exp);

@@ -37,16 +37,24 @@ namespace NEXImageControlPanel
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory()) // Set the base path where the configuration file is located
                 .AddJsonFile("appsettings.json"); // Add the JSON configuration file
+            // Infrastructure
             services.AddSingleton<IConfiguration>(builder.Build());
+            services.AddSingleton<ICoreServices, CoreServices>();
+            services.AddSingleton<IScriptRunnerServices, ScriptRunnerServices>();
+            services.AddSingleton<IAppPageManager, AppPageManager>();
+            services.AddSingleton<IDesktopServices, DesktopServices>();
             services.AddSingleton<PanelConfig>();
+
+            // Page View Models
             services.AddTransient<MainWindowViewModel>();
             services.AddTransient<RunScriptsWindowViewModel>();
             services.AddTransient<ImageBackupWindowViewModel>();
             services.AddTransient<ImageScript>();
             services.AddTransient<SystemInfoPageViewModel>();
-            services.AddSingleton<ICoreServices, CoreServices>();
-            services.AddSingleton<IScriptRunnerServices, ScriptRunnerServices>();
-            services.AddSingleton<IAppPageManager, AppPageManager>();
+            services.AddTransient<DesktopBackgroundPageViewModel>();
+            services.AddTransient<ImageBackupPageViewModel>();
+            services.AddTransient<ImageScriptsPageViewModel>();
+
             return services.BuildServiceProvider();
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using System.Text;
 using NEXImageControlPanel.Config;
 using NEXImageControlPanel.Interfaces;
 using NEXImageControlPanel.Models;
@@ -72,5 +73,22 @@ public class ScriptRunnerServices(ICoreServices core, PanelConfig config) : IScr
     public string GetAbsoluteScriptPath(string script, ScriptType scriptType)
     {
         return GetAbsoluteScriptPath(AddExtension(script, GetScriptExtension(scriptType)));
+    }
+
+    public void ExecuteScript(string script, ScriptType scriptType)
+    {
+        var absoluteScriptPath = GetAbsoluteScriptPath(script, scriptType);
+
+        var psi = scriptType switch
+        {
+            ScriptType.PowerShell7 => CreatePowerShell7Process(absoluteScriptPath),
+            ScriptType.PowerShell => CreatePowerShellProcess(absoluteScriptPath),
+            ScriptType.Batch => CreateBatchProcess(absoluteScriptPath),
+            ScriptType.Executable => CreateExecutableProcess(absoluteScriptPath),
+            _ => throw new ArgumentOutOfRangeException()
+        };
+
+        var p = Process.Start(psi);
+        p?.WaitForExit();
     }
 }

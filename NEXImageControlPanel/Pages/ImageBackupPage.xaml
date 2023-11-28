@@ -1,0 +1,58 @@
+﻿<Page x:Class="NEXImageControlPanel.Pages.ImageBackupPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:pageviewmodels="clr-namespace:NEXImageControlPanel.PageViewModels" 
+      xmlns:usercontrols="clr-namespace:NEXImageControlPanel.UserControls"
+      xmlns:models="clr-namespace:NEXImageControlPanel.Models"
+      mc:Ignorable="d"
+      d:DesignHeight="450" d:DesignWidth="800"
+      d:DataContext="{d:DesignInstance pageviewmodels:ImageBackupPageViewModel}"
+      Title="Image Backup/Restore">
+
+    <StackPanel Orientation="Vertical">
+        <usercontrols:TextDisplayValue TextLabel="Internal Backup Path:" Value="{Binding Path=InternalBackupPath}" />
+        <usercontrols:TextDisplayValue TextLabel="External Backup Path:" Value="{Binding Path=ExternalBackupPath, FallbackValue='(not specified)'}" />
+        <usercontrols:TextDisplayValue TextLabel="Baseline Image Name:" Value="{Binding Path=Config.ImageFileName}"></usercontrols:TextDisplayValue>
+        <StackPanel Margin="6" Orientation="Horizontal">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Margin" Value="3"></Setter>
+                    <Setter Property="Padding" Value="7"></Setter>
+                </Style>
+            </StackPanel.Resources>
+            <Button Command="{Binding Path=SelectExternalBackupPathCommand}">Set External Backup Path</Button>
+            <Button>Copy to External Backup Path</Button>
+            
+        </StackPanel>
+        
+            <TextBlock FontWeight="Thin" FontSize="18" TextAlignment="Center" Margin="8" >
+                Additional Custom Scripts
+            </TextBlock>
+        <ItemsControl ItemsSource="{Binding Path=ImageScripts}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel.Resources>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Margin" Value="3"></Setter>
+                                <Setter Property="Padding" Value="7"></Setter>
+                            </Style>
+                        </StackPanel.Resources>
+                    </StackPanel>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type models:ImageScript}">
+                    <Button MinWidth="230" Margin="6" 
+
+                            Content="{Binding Path=ScriptDescription}"
+                            Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.ExecuteImageScriptCommand}"
+                            CommandParameter="{Binding .}"/>
+
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </StackPanel>
+</Page>

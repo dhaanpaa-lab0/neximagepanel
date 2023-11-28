@@ -8,7 +8,7 @@
         xmlns:models="clr-namespace:NEXImageControlPanel.Models"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
-        Title="Image Control Panel" Height="450" Width="900">
+        Title="Image Control Panel" Height="900" Width="900" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="250" Width="5*"></ColumnDefinition>
@@ -18,7 +18,14 @@
             <ItemsControl ItemsSource="{Binding Path=WindowPages}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel Orientation="Vertical"/>
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Margin" Value="3"></Setter>
+                                    <Setter Property="Padding" Value="7"></Setter>
+                                </Style>
+                            </StackPanel.Resources>
+                        </StackPanel>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
@@ -34,9 +41,14 @@
 
             </ItemsControl>
         </StackPanel>
-        <Frame Grid.Column="1" Content="{Binding Path=CurrentWindowPage}">
-            
-        </Frame>
-
+        <StackPanel Orientation="Vertical" Grid.Column="1">
+            <TextBlock 
+                Text="{Binding Path=CurrentWindowPage.Title, FallbackValue='(Not Selected)'}" 
+                FontSize="18" 
+                FontWeight="Bold" 
+                TextAlignment="Center"
+                Margin="18"/>
+            <Frame Content="{Binding Path=CurrentWindowPage}" NavigationUIVisibility="Hidden" />
+        </StackPanel>
     </Grid>
 </Window>

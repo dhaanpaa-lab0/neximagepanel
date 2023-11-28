@@ -12,5 +12,5 @@ public interface IScriptRunnerServices
 
     public ProcessStartInfo CreateExecutableProcess(string script);
     public string GetAbsoluteScriptPath(string script, ScriptType scriptType);
-
+    public void ExecuteScript(string script, ScriptType scriptType);
 }

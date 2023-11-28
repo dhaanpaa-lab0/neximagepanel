@@ -24,45 +24,27 @@ namespace NEXImageControlPanel.ViewModels
         private readonly ICoreServices _core;
 
         [ObservableProperty]
-        private Page currentWindowPage;
+        private Page _currentWindowPage;
 
         /// <inheritdoc/>
         public MainWindowViewModel(PanelConfig config, ICoreServices core, IAppPageManager pageManager)
         {
             _config = config;
             _core = core;
-            _windowPages = pageManager.GetAppPages();
+            var mainWindowPages = pageManager.GetAppPages().Select(x => new MainWindowPage()
+            {
+                Order = x.PageName == nameof(HomePage) ? -1 : 0,
+                PageName = x.PageName,
+                Title = x.Title,
+                WindowPage = x.WindowPage,
+
+            }).OrderBy(x => x.Order).ToList();
+            
+            WindowPages = mainWindowPages;
             CurrentWindowPage = new HomePage();
         }
 
-        public string InternalBackupPath => _config.InternalBackupPartitionPath;
-
-
-        public string ComputerName => Environment.MachineName;
-
-        
-
-        //<Button Margin = "6" Grid.Column="0" Grid.Row="2">Set Black Background</Button>
-        [RelayCommand]
-        public void SetBlackDesktop() => DesktopServices.SetSolidColorWallpaper(Color.Black);
-
-        //<Button Margin = "6" Grid.Column="0" Grid.Row="2">Set Gray Background</Button>
-        [RelayCommand]
-        public void SetGrayDesktop() => DesktopServices.SetSolidColorWallpaper(Color.DarkGray);
-        //<Button Margin = "6" Grid.Column="0" Grid.Row="2">Set DarkBlue Background</Button>
-        [RelayCommand]
-        public void SetDarkBlueDesktop() => DesktopServices.SetSolidColorWallpaper(Color.DarkSlateBlue);
-
-        //<Button Margin = "6" Grid.Column="0" Grid.Row="2">Set LightBlue Background</Button>
-        [RelayCommand]
-        public void SetLightBlueDesktop() => DesktopServices.SetSolidColorWallpaper(Color.LightBlue);
-
-        //<Button Margin = "6" Grid.Column="0" Grid.Row="2">Set Black Background</Button>
-        [RelayCommand]
-        public void SetDarkCyanDesktop() => DesktopServices.SetSolidColorWallpaper(Color.DarkCyan);
-
-        //[RelayCommand]
-        //public void ShowScriptsWindow() => new RunScriptsWindow().Show();
+       
 
         [RelayCommand]
         public void EditPanelConfig() =>
@@ -82,10 +64,6 @@ namespace NEXImageControlPanel.ViewModels
                 CurrentWindowPage = p.WindowPage.Compile().Invoke();
             }
         }
-
-        //[RelayCommand]
-        //public void OpenImageBackupWindow() =>
-        //    new ImageBackupWindow().Show();
 
         [RelayCommand]
         public void Backup()

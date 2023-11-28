@@ -41,7 +41,7 @@ public partial class ImageBackupWindowViewModel : ObservableObject
     [RelayCommand]
     public void DoScript(string parameter)
     {
-        var script = Enumerable.FirstOrDefault<ImageScript>(this.ImageScripts, s => s.ScriptName == parameter);
+        var script = Enumerable.FirstOrDefault(this.ImageScripts, s => s.ScriptName == parameter);
         if (script is { ScriptName: not null })
         {
             MessageBox.Show(_runner.GetAbsoluteScriptPath(script.ScriptName, ScriptType.Batch));
