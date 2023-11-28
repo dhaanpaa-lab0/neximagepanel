@@ -44,22 +44,7 @@ jobs:
       run: |
         $BUILD_NUMBER="${{ github.run_id }}-${{ github.run_number }}-${{ github.run_attempt }}"
         echo "DIST_VERSION=${$BUILD_VERSION}" >> $GITHUB_ENV
-        
-    - name: Create Tag
-      id: create_tag_out
-      uses: actions/github-script@v6
 
-      with:
-        script: |
-          const {DIST_VERSION} = process.env          
-          github.rest.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: `refs/tags/${DIST_VERSION}`,
-              sha: context.sha
-          })
-          return DIST_VERSION
-        result-encoding: string
 
     - name: Create Release
       id: create_release
@@ -67,8 +52,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
-        tag_name: ${{ steps.create_tag_out.outputs.result }}
-        release_name: Release ${{ steps.create_tag_out.outputs.result }} for ${{ github.sha }}
+        tag_name: ${{ github.env.DIST_VERSION }}
+        release_name: Release ${{ github.env.DIST_VERSION }} for ${{ github.sha }}
 
     - name: Upload Release Asset
       id: upload-release-asset 
