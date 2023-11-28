@@ -48,10 +48,6 @@ jobs:
 
   build:
 
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-
     runs-on: windows-latest  # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
 
@@ -74,8 +70,8 @@ jobs:
 
     - name: Build and Publish
       run:
-        pacman -Sy --noconfirm --noprogressbar --needed p7zip
-        dotnet public -o ./dist
+      
+        dotnet publish -o ./dist
         cd ./dist
         7z a ../distro.7z .
         cd ..
