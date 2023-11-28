@@ -36,7 +36,7 @@ jobs:
         cd ./NEXImageControlPanel
         dotnet publish -o ./dist
         cd ./dist
-        7z a ../../distro.7z .
+        7z a ../../distro.zip .
         cd ..
         
         
@@ -45,5 +45,11 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: BUILD
-        path: ./distro.7z
+        name: build-output
+        path: ./distro.zip
+
+    - name: Create Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "distro.zip"
+        
