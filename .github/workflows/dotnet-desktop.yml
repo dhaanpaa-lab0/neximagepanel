@@ -69,8 +69,9 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.2
 
     - name: Build and Publish
-      run:
-      
+      shell: pwsh
+      run: |
+        cd ./NEXImageControlPanel
         dotnet publish -o ./dist
         cd ./dist
         7z a ../distro.7z .
