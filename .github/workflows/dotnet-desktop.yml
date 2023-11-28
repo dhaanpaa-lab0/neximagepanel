@@ -40,13 +40,27 @@ jobs:
         cd ..
         
         
+    - name: Set Dist Version
+      run: |
+        BUILD_NUMBER="${{ github.run_id }}-${{ github.run_number }}-${{ github.run_attempt }}"
+        echo "${BUILD_NUMBER}"
+        VERSION="$(mvn -q -U -Dexpression=project.build.finalName help:evaluate -DforceStdout=true -DbuildNumber=${BUILD_NUMBER})"
+        echo "DIST_VERSION=${VERSION}" >> $GITHUB_ENV
+    - name: Create Tag
+      id: create_tag_out
+      uses: actions/github-script@v6
 
-    # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
       with:
-        name: build-output
-        path: ./distro.zip
+        script: |
+          const {DIST_VERSION} = process.env          
+          github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `refs/tags/${DIST_VERSION}`,
+              sha: context.sha
+          })
+          return DIST_VERSION
+        result-encoding: string
 
     - name: Create Release
       id: create_release
@@ -54,8 +68,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }} for ${{ github.sha }}
+        tag_name: ${{ steps.create_tag_out.outputs.result }}
+        release_name: Release ${{ steps.create_tag_out.outputs.result }} for ${{ github.sha }}
 
     - name: Upload Release Asset
       id: upload-release-asset 
