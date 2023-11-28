@@ -52,4 +52,5 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         artifacts: "distro.zip"
+        commit: ${{ github.sha }}
         
