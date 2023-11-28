@@ -30,6 +30,19 @@ jobs:
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
 
+    - name: Restore Packages
+      shell: pwsh
+      run: |
+        cd ./NEXImageControlPanel
+        dotnet restore
+
+    - uses: actions/cache@v1
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }} #hash of project files
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
     - name: Build and Publish
       shell: pwsh
       run: |
@@ -41,9 +54,10 @@ jobs:
         
         
     - name: Set Dist Version
+      id: set-dist-ver
       run: |
         $BUILD_NUMBER="${{ github.run_id }}-${{ github.run_number }}-${{ github.run_attempt }}"
-        echo "DIST_VERSION=${$BUILD_VERSION}" >> $GITHUB_ENV
+        echo "DIST_VERSION=${$BUILD_NUMBER}" >> $GITHUB_OUTPUT
 
 
     - name: Create Release
@@ -52,8 +66,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
-        tag_name: ${{ github.env.DIST_VERSION }}
-        release_name: Release ${{ github.env.DIST_VERSION }} for ${{ github.sha }}
+        tag_name: ${{ steps.set-dist-ver.outputs.DIST_VERSION }}
+        release_name: Release ${{ steps.set-dist-ver.outputs.DIST_VERSION }} for ${{ github.sha }}
 
     - name: Upload Release Asset
       id: upload-release-asset 
