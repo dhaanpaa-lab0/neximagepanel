@@ -54,11 +54,11 @@ jobs:
         
         
     - name: Set Dist Version
-      id: set-dist-ver
+      id: set_dist_ver
       shell: pwsh
       run: |
         $BUILD_NUMBER="${{ github.run_id }}-${{ github.run_number }}-${{ github.run_attempt }}"
-        echo "DIST_VERSION=$($BUILD_NUMBER)" >> $GITHUB_OUTPUT
+        echo "dist_version=$($BUILD_NUMBER)" >> $env:GITHUB_OUTPUT
 
 
     - name: Create Release
@@ -67,8 +67,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
-        tag_name: ${{ steps.set-dist-ver.outputs.DIST_VERSION }}
-        release_name: Release ${{ steps.set-dist-ver.outputs.DIST_VERSION }} for ${{ github.sha }}
+        tag_name: ${{ steps.set_dist_ver.outputs.dist_version }}
+        release_name: Release ${{ steps.set_dist_ver.outputs.dist_version }} for ${{ github.sha }}
 
     - name: Upload Release Asset
       id: upload-release-asset 
